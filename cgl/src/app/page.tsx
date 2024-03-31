@@ -24,7 +24,10 @@ function emptyGrid(): boolean[][] {
 	.map(() => false));
 }
 
-function updateGridCell(grid: boolean[][], x: number, y: number): boolean[][] {
+function updateGridCell(grid: boolean[][], x: number, y: number, playing: boolean): boolean[][] {
+	if (playing) {
+		return grid
+	}
 	let old = [...grid];
 	old[y][x] = !old[y][x];
 	return old
@@ -93,8 +96,8 @@ export default function Home() {
 
     		<Stack direction={"row"} spacing={2}>
 				<Button variant={"contained"} onClick={() => setPlay(!play)}> {play ? <PauseIcon/> : <PlayArrowIcon/>}</Button>
-				<Button variant={"contained"} onClick={() => setGrid(randomGrid(density))}> <ReplayIcon/> </Button>
-				<Button variant={"contained"} onClick={() => {setPlay(false); setGrid(emptyGrid())}}> <DeleteIcon/> </Button>
+				<Button variant={"contained"} onClick={() => setGrid(randomGrid(density))} disabled={play}> <ReplayIcon/> </Button>
+				<Button variant={"contained"} onClick={() => setGrid(emptyGrid())} disabled={play}> <DeleteIcon/> </Button>
 				<Stack direction={"row"} spacing={2} padding={"5px"} width={"400px"} alignItems={"center"} sx={{border: 1, borderRadius: "16px"}}>
 					<Typography gutterBottom>
 						Density:
@@ -105,10 +108,11 @@ export default function Home() {
 						min={0}
 						max={100}
 						step={1}
+						disabled={play}
 					/>
 				</Stack>
 			</Stack>
-			<Grid density={density} play={play} grid={grid} clickHandler={(x: number, y: number) => setGrid(updateGridCell(grid, x, y))}/>
+			<Grid density={density} play={play} grid={grid} clickHandler={(x: number, y: number) => setGrid(updateGridCell(grid, x, y, play))}/>
 		</main>
 	);
 }
