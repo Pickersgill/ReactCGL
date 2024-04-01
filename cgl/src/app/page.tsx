@@ -71,8 +71,9 @@ function getNextGrid(grid: boolean[][]): boolean[][] {
 	return grid
 		.map((row, y) => row
 			.map((alive, x) => shouldLive(alive, getNeighbours(grid, x, y)))
-		)
+		);
 }
+
 export default function Home() {
 	const [density, setDensity] = useState<number>(0.5);
 	const [play, setPlay] = useState<boolean>(false);
