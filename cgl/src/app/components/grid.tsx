@@ -1,23 +1,14 @@
+import styles from "./components.module.css";
 import Cell from "./cell";
-import styles from "./page.module.css";
-import React, { useState, useEffect } from "react";
 
-export default function Grid(props: {density: number, play: boolean, grid: boolean[][], clickHandler: any}) {
-	let grid_style = {
-		display: "grid",
-		width: "604px",
-		height: "604px",
-		gridTemplateColumns: "repeat(10, 60px)",
-		gridTemplateRows: "repeat(10, 60px)",
-		border: "2px solid black",
-	};
-
+export default function Grid(props: {grid: boolean[][], clickHandler: (x: number, y: number) => void}) {
+	const {grid, clickHandler} = props;
 	return (
-		<div style={grid_style}>
-			{props.grid.map((x: boolean[],i: number) => 
+		<div className={styles.grid}>
+			{grid.map((x: boolean[],i: number) => 
 				<div key={i}>
 					{
-						x.map((alive: boolean, j: number) => <Cell alive={alive} onClick={() => props.clickHandler(j,i)} key={i*props.grid.length+j}/>)
+						x.map((alive: boolean, j: number) => <Cell alive={alive} onClick={() => clickHandler(j,i)} key={i*grid.length+j}/>)
 					}
 					<br/>
 				</div>

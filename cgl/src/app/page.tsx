@@ -12,10 +12,9 @@ import ReplayIcon from '@mui/icons-material/Replay';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 function randomGrid(density: number): boolean[][] {
-	let g = new Array(10).fill(0)
+	return new Array(10).fill(0)
 	.map(() => new Array(10).fill(0)
 	.map(() => Math.random() <= density));
-	return g
 }
 
 function emptyGrid(): boolean[][] {
@@ -26,29 +25,29 @@ function emptyGrid(): boolean[][] {
 
 function updateGridCell(grid: boolean[][], x: number, y: number, playing: boolean): boolean[][] {
 	if (playing) {
-		return grid
+		return grid;
 	}
 	let old = [...grid];
 	old[y][x] = !old[y][x];
-	return old
+	return old;
 }
 
 function getNeighbours(grid: boolean[][], x: number, y: number): number {
-	let neighbour_count = 0;
-	let h = grid.length;
-	let w = grid[0].length;
+	let neighbourCount = 0;
+	const h = grid.length;
+	const w = grid[0].length;
 	for (const dx of [-1,0,1]){
 		let cx = x + dx;
 		if (cx >= 0 && cx < w) {
 			for (const dy of [-1,0,1]){
 				let cy = y + dy;
 				if (cy >= 0 && cy < h && !(dx === 0 && dy === 0)) {
-					neighbour_count += grid[cy][cx] ? 1 : 0;
+					neighbourCount += grid[cy][cx] ? 1 : 0;
 				}
 			}
 		}
 	}
-	return neighbour_count
+	return neighbourCount;
 }
 
 function shouldLive(alive: boolean, neighbours: number): boolean {
@@ -75,18 +74,18 @@ function getNextGrid(grid: boolean[][]): boolean[][] {
 		)
 }
 export default function Home() {
-	const [density, setDensity] = useState(0.5);
-	const [play, setPlay] = useState(false);
-	const [grid, setGrid] = useState(emptyGrid());
-	const [refresh, setRefresh] = useState(true);
+	const [density, setDensity] = useState<number>(0.5);
+	const [play, setPlay] = useState<boolean>(false);
+	const [grid, setGrid] = useState<boolean[][]>(emptyGrid());
+	const [refresh, setRefresh] = useState<boolean>(true);
 
 	useEffect(function nextFrame() {
-			if (refresh && play) {
-				setGrid(getNextGrid(grid));
-				setRefresh(false);
-				setTimeout(() => setRefresh(true), 100);
-			}
-		}, [refresh, play]);
+		if (refresh && play) {
+			setGrid(getNextGrid(grid));
+			setRefresh(false);
+			setTimeout(() => setRefresh(true), 100);
+		}
+	}, [refresh, play]);
 
 	return (
 		<main className={styles.main}>
@@ -104,7 +103,7 @@ export default function Home() {
 					</Typography>
 					<Slider
 						defaultValue={50} 
-						onChange={(ev, dens) => setDensity((dens as number/100))}
+						onChange={(_, dens) => setDensity((dens as number/100))}
 						min={0}
 						max={100}
 						step={1}
@@ -112,7 +111,7 @@ export default function Home() {
 					/>
 				</Stack>
 			</Stack>
-			<Grid density={density} play={play} grid={grid} clickHandler={(x: number, y: number) => setGrid(updateGridCell(grid, x, y, play))}/>
+			<Grid grid={grid} clickHandler={(x, y) => setGrid(updateGridCell(grid, x, y, play))}/>
 		</main>
 	);
 }
