@@ -1,0 +1,15 @@
+.cell {
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    border: 1px solid black;
+}
+
+.grid {
+    display: grid;
+    width: 604px;
+    height: 604px;
+    grid-template-columns: repeat(10, 60px);
+    grid-template-rows: repeat(10, 60px);
+    border: 2px solid black;
+}
